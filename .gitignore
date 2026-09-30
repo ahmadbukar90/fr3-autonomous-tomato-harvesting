@@ -1,0 +1,51 @@
+# ROS 2 build output
+build/
+install/
+log/
+.colcon/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+venv/
+
+# Local data, recordings, and experiment output
+data/
+recordings/
+captures/
+harvest_dataset/
+Trajectories_paper/
+*.csv
+*.zip
+*.bag
+*.db3
+*.mcap
+*.pdf
+*.gv
+
+# Trained models and large inference files
+*.pt
+*.pth
+*.onnx
+*.engine
+
+# Private hardware and calibration settings
+**/config/*
+!**/config/*.example.yaml
+!**/config/README.md
+*.local.yaml
+*.private.yaml
+calibration/
+
+# Secrets and vendor copies
+.env
+*.key
+*.pem
+sdk-*/
+
+# Editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
