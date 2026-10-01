@@ -24,6 +24,7 @@
   <exec_depend>moveit_msgs</exec_depend>
   <exec_depend>shape_msgs</exec_depend>
   <exec_depend>rcl_interfaces</exec_depend>
+  <exec_depend>franka_msgs</exec_depend>
   <exec_depend>tomato_interfaces</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
