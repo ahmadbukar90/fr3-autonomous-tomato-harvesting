@@ -73,3 +73,7 @@ Before installing dependencies, verify the repository without downloading, build
 ```bash
 ./scripts/preflight_simulation.sh
 ```
+
+## Guarded hardware guide
+
+See [docs/HARDWARE.md](docs/HARDWARE.md) before using a physical FR3.
