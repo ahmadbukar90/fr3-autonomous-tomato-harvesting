@@ -77,3 +77,15 @@ Before installing dependencies, verify the repository without downloading, build
 ## Guarded hardware guide
 
 See [docs/HARDWARE.md](docs/HARDWARE.md) before using a physical FR3.
+
+## Demonstrations
+
+### Simulation and real-world testbeds
+
+![Simulation and physical FR3 tomato-harvesting testbeds](docs/images/simulation-and-hardware-testbeds.png)
+
+Left: MuJoCo simulation testbed. Right: physical FR3 tomato-harvesting testbed.
+
+### Physical hardware video
+
+[Watch the physical FR3 hardware demonstration on YouTube](https://youtube.com/shorts/EoQ1PBycKsw?feature=share)
