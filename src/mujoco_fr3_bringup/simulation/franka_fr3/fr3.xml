@@ -1,0 +1,1211 @@
+<mujoco model="fr3">
+
+  <compiler angle="radian" meshdir="assets"/>
+
+  <option integrator="implicitfast"/>
+
+  <default>
+    <default class="fr3">
+
+      <!-- Full gravity compensation for the FR3 body tree only. -->
+
+      <joint
+        damping="0.21"
+        armature="0.195"
+        frictionloss="1.137"/>
+
+      <position inheritrange="1"/>
+
+      <default class="visual">
+        <geom
+          type="mesh"
+          group="2"
+          contype="0"
+          conaffinity="0"/>
+      </default>
+
+      <default class="collision">
+        <geom
+          type="mesh"
+          group="3"
+          mass="0"
+          density="0"/>
+      </default>
+
+      <site
+        size="0.001"
+        rgba="0.5 0.5 0.5 0.3"
+        group="4"/>
+
+    </default>
+  </default>
+
+  <asset>
+
+    <material name="black" rgba=".2 .2 .2 1"/>
+    <material name="white" rgba="1 1 1 1"/>
+    <material name="red" rgba="1 0.072272 0.039546 1"/>
+    <material name="gray" rgba="0.863156 0.863156 0.863157 1"/>
+
+    <material
+      name="button_green"
+      rgba="0.102241 0.571125 0.102242 1"/>
+
+    <material
+      name="button_red"
+      rgba="0.520996 0.008023 0.013702 1"/>
+
+    <material
+      name="button_blue"
+      rgba="0.024157 0.445201 0.737911 1"/>
+
+    <mesh file="link0_0.obj"/>
+    <mesh file="link0_1.obj"/>
+    <mesh file="link0_2.obj"/>
+    <mesh file="link0_3.obj"/>
+    <mesh file="link0_4.obj"/>
+    <mesh file="link0_5.obj"/>
+    <mesh file="link0_6.obj"/>
+
+    <mesh file="link1.obj"/>
+    <mesh file="link2.obj"/>
+
+    <mesh file="link3_0.obj"/>
+    <mesh file="link3_1.obj"/>
+
+    <mesh file="link4_0.obj"/>
+    <mesh file="link4_1.obj"/>
+
+    <mesh file="link5_0.obj"/>
+    <mesh file="link5_1.obj"/>
+    <mesh file="link5_2.obj"/>
+
+    <mesh file="link6_0.obj"/>
+    <mesh file="link6_1.obj"/>
+    <mesh file="link6_2.obj"/>
+    <mesh file="link6_3.obj"/>
+    <mesh file="link6_4.obj"/>
+    <mesh file="link6_5.obj"/>
+    <mesh file="link6_6.obj"/>
+    <mesh file="link6_7.obj"/>
+
+    <mesh file="link7_0.obj"/>
+    <mesh file="link7_1.obj"/>
+    <mesh file="link7_2.obj"/>
+    <mesh file="link7_3.obj"/>
+
+    <mesh name="link0_coll" file="link0.stl"/>
+    <mesh name="link1_coll" file="link1.stl"/>
+    <mesh name="link2_coll" file="link2.stl"/>
+    <mesh name="link3_coll" file="link3.stl"/>
+    <mesh name="link4_coll" file="link4.stl"/>
+    <mesh name="link5_coll" file="link5.stl"/>
+    <mesh name="link6_coll" file="link6.stl"/>
+    <mesh name="link7_coll" file="link7.stl"/>
+
+    <mesh name="franka_hand_coll" file="hand.stl"/>
+
+    <!-- Official high-detail Franka Hand visual mesh -->
+        <!-- Official Franka hand split into body and cable -->
+        <!-- Detailed Franka hand components -->
+    <mesh
+      name="franka_hand_body_mesh"
+      file="franka_hand_body_aligned.stl"/>
+
+    <mesh
+      name="franka_hand_cable_mesh"
+      file="franka_hand_cable_aligned.stl"/>
+
+    <mesh
+      name="franka_hand_connector_mesh"
+      file="franka_hand_connector_aligned.stl"/>
+
+        <!-- Official GelSight Mini CAD -->
+    <mesh
+      name="gelsight_mini_shell_mesh"
+      file="gsmini_shell.stl"
+      scale="0.001 0.001 0.001"/>
+
+    <mesh
+      name="gelsight_panda_adapter_mesh"
+      file="panda_adapter_gsmini.stl"
+      scale="0.001 0.001 0.001"/>
+
+    <mesh
+      name="d405_franka_mount_mesh"
+      file="d405_mount/d405_mount_aligned.stl"
+      scale="0.001 0.001 0.001"/>
+
+    <!-- Intel RealSense D405 CAD -->
+    <mesh
+      name="d405_camera_mesh"
+      file="d405_mount/RealSense_D405_binary.stl"/>
+
+  </asset>
+
+  <worldbody>
+
+
+    <body gravcomp="1" name="base" childclass="fr3" pos="0.22 0 0.70">
+
+      <body gravcomp="1" name="fr3_link0">
+
+        <geom mesh="link0_0" material="black" class="visual"/>
+        <geom mesh="link0_1" material="white" class="visual"/>
+        <geom mesh="link0_2" material="white" class="visual"/>
+        <geom mesh="link0_3" material="white" class="visual"/>
+        <geom mesh="link0_4" material="white" class="visual"/>
+        <geom mesh="link0_5" material="red" class="visual"/>
+        <geom mesh="link0_6" material="black" class="visual"/>
+
+        <geom
+          name="fr3_link0_collision"
+          mesh="link0_coll"
+          class="collision"/>
+
+        <body gravcomp="1" name="fr3_link1" pos="0 0 0.333">
+
+          <inertial
+            pos="4.128e-07 -0.0181251 -0.0386036"
+            quat="0.998098 -0.0605364 0.00380499 0.0110109"
+            mass="2.92747"
+            diaginertia="0.0239286 0.0227246 0.00610634"/>
+
+          <joint
+            name="fr3_joint1"
+            axis="0 0 1"
+            range="-2.7437 2.7437"
+            actuatorfrcrange="-87 87"/>
+
+          <geom
+            name="fr3_link1_collision"
+            class="collision"
+            mesh="link1_coll"/>
+
+          <geom
+            material="white"
+            mesh="link1"
+            class="visual"/>
+
+          <body gravcomp="1" name="fr3_link2" quat="1 -1 0 0">
+
+            <inertial
+              pos="0.00318289 -0.0743222 0.00881461"
+              quat="0.502599 0.584437 -0.465998 0.434366"
+              mass="2.93554"
+              diaginertia="0.0629567 0.0411924 0.0246371"/>
+
+            <joint
+              name="fr3_joint2"
+              axis="0 0 1"
+              range="-1.7837 1.7837"
+              actuatorfrcrange="-87 87"/>
+
+            <geom
+              material="white"
+              mesh="link2"
+              class="visual"/>
+
+            <geom
+              name="fr3_link2_collision"
+              class="collision"
+              mesh="link2_coll"/>
+
+            <body gravcomp="1"
+              name="fr3_link3"
+              pos="0 -0.316 0"
+              quat="1 1 0 0">
+
+              <inertial
+                pos="0.0407016 -0.00482006 -0.0289731"
+                quat="0.921025 -0.244161 0.155272 0.260745"
+                mass="2.2449"
+                diaginertia="0.0267409 0.0189869 0.0171587"/>
+
+              <joint
+                name="fr3_joint3"
+                axis="0 0 1"
+                range="-2.9007 2.9007"
+                actuatorfrcrange="-87 87"/>
+
+              <geom
+                mesh="link3_0"
+                material="white"
+                class="visual"/>
+
+              <geom
+                mesh="link3_1"
+                material="black"
+                class="visual"/>
+
+              <geom
+                name="fr3_link3_collision"
+                class="collision"
+                mesh="link3_coll"/>
+
+              <body gravcomp="1"
+                name="fr3_link4"
+                pos="0.0825 0 0"
+                quat="1 1 0 0">
+
+                <inertial
+                  pos="-0.0459101 0.0630493 -0.00851879"
+                  quat="0.438018 0.803311 0.00937812 0.403414"
+                  mass="2.6156"
+                  diaginertia="0.05139 0.0372717 0.0160047"/>
+
+                <joint
+                  name="fr3_joint4"
+                  axis="0 0 1"
+                  range="-3.0421 -0.1518"
+                  actuatorfrcrange="-87 87"/>
+
+                <geom
+                  mesh="link4_0"
+                  material="white"
+                  class="visual"/>
+
+                <geom
+                  mesh="link4_1"
+                  material="black"
+                  class="visual"/>
+
+                <geom
+                  name="fr3_link4_collision"
+                  class="collision"
+                  mesh="link4_coll"/>
+
+                <body gravcomp="1"
+                  name="fr3_link5"
+                  pos="-0.0825 0.384 0"
+                  quat="1 -1 0 0">
+
+                  <inertial
+                    pos="-0.00160396 0.0292536 -0.0972966"
+                    quat="0.919031 0.125604 0.0751531 -0.366003"
+                    mass="2.32712"
+                    diaginertia="0.0579335 0.0449144 0.0130634"/>
+
+                  <joint
+                    name="fr3_joint5"
+                    axis="0 0 1"
+                    range="-2.8065 2.8065"
+                    actuatorfrcrange="-12 12"
+                    armature="0.074"
+                    frictionloss="0.763"/>
+
+                  <geom
+                    mesh="link5_0"
+                    material="white"
+                    class="visual"/>
+
+                  <geom
+                    mesh="link5_1"
+                    material="white"
+                    class="visual"/>
+
+                  <geom
+                    mesh="link5_2"
+                    material="black"
+                    class="visual"/>
+
+                  <geom
+                    name="fr3_link5_collision"
+                    class="collision"
+                    mesh="link5_coll"/>
+
+                  <body gravcomp="1" name="fr3_link6" quat="1 1 0 0">
+
+                    <inertial
+                      pos="0.0597131 -0.0410295 -0.0101693"
+                      quat="0.621301 0.552665 0.510011 0.220081"
+                      mass="1.81704"
+                      diaginertia="0.0175039 0.0161123 0.00193529"/>
+
+                    <joint
+                      name="fr3_joint6"
+                      axis="0 0 1"
+                      range="0.5445 4.5169"
+                      actuatorfrcrange="-12 12"
+                      armature="0.074"
+                      frictionloss="0.44"/>
+
+                    <geom
+                      mesh="link6_0"
+                      material="button_green"
+                      class="visual"/>
+
+                    <geom
+                      mesh="link6_1"
+                      material="white"
+                      class="visual"/>
+
+                    <geom
+                      mesh="link6_2"
+                      material="white"
+                      class="visual"/>
+
+                    <geom
+                      mesh="link6_3"
+                      material="gray"
+                      class="visual"/>
+
+                    <geom
+                      mesh="link6_4"
+                      material="button_red"
+                      class="visual"/>
+
+                    <geom
+                      mesh="link6_5"
+                      material="white"
+                      class="visual"/>
+
+                    <geom
+                      mesh="link6_6"
+                      material="black"
+                      class="visual"/>
+
+                    <geom
+                      mesh="link6_7"
+                      material="button_blue"
+                      class="visual"/>
+
+                    <geom
+                      name="fr3_link6_collision"
+                      class="collision"
+                      mesh="link6_coll"/>
+
+                    <body gravcomp="1"
+                      name="fr3_link7"
+                      pos="0.088 0 0"
+                      quat="1 1 0 0">
+
+                      <inertial
+                        pos="0.00452258 0.00862619 -0.0161633"
+                        quat="0.727579 0.0978688 -0.24906 0.63168"
+                        mass="0.627143"
+                        diaginertia="0.000223836 0.000223642 5.64132e-07"/>
+
+                      <joint
+                        name="fr3_joint7"
+                        axis="0 0 1"
+                        range="-3.0159 3.0159"
+                        actuatorfrcrange="-12 12"
+                        armature="0.074"
+                        frictionloss="0.248"/>
+
+                      <!-- Link 7 visual-only clocking correction: 30 deg -->
+                      <geom
+                        mesh="link7_0"
+                        material="black"
+                        class="visual"
+                        pos="0 0 0.0015"
+                        euler="0 0 0.783"/>
+
+                      <geom
+                        mesh="link7_1"
+                        material="white"
+                        class="visual"
+                        pos="0 0 0.0015"
+                        euler="0 0 0.783"/>
+
+                      <geom
+                        mesh="link7_2"
+                        material="white"
+                        class="visual"
+                        pos="0 0 0.0015"
+                        euler="0 0 0.783"/>
+
+                      <geom
+                        mesh="link7_3"
+                        material="black"
+                        class="visual"
+                        pos="0 0 0.0015"
+                        euler="0 0 0.783"/>
+
+                      <geom
+                        name="fr3_link7_collision"
+                        class="collision"
+                        mesh="link7_coll"/>
+
+                      <site
+                        name="attachment_site"
+                        pos="0 0 0.107"
+                        type="sphere"
+                        size="0.010"
+                        rgba="0 1 0 1"/>
+
+                      <body gravcomp="1" name="fr3_hand" pos="0 0 0.107" euler="0 0 -0.7853981633974483">
+
+                        <body
+                          gravcomp="1"
+                          name="fr3_hand_physical"
+                          euler="0 0 0.7853981633974483">
+
+
+                        <!-- Official detailed Franka hand visual -->
+
+
+
+
+
+                        <!-- Official detailed Franka hand visual -->
+                        <!-- Official detailed Franka hand visual -->
+                        <!-- Detailed Franka hand body -->
+                        <!-- Detailed Franka hand body -->
+                        <geom
+                          name="fr3_hand_visual"
+                          type="mesh"
+                          mesh="franka_hand_body_mesh"
+                          rgba="1 1 1 1"
+                          contype="0"
+                          conaffinity="0"
+                          group="2"/>
+
+                        <geom
+                          name="fr3_hand_cable_visual"
+                          type="mesh"
+                          mesh="franka_hand_cable_mesh"
+                          rgba="0.02 0.02 0.02 1"
+                          contype="0"
+                          conaffinity="0"
+                          group="2"/>
+
+                        <geom
+                          name="fr3_hand_connector_visual"
+                          type="mesh"
+                          mesh="franka_hand_connector_mesh"
+                          rgba="0.02 0.02 0.02 1"
+                          contype="0"
+                          conaffinity="0"
+                          group="2"/>
+
+
+                        <!-- Existing simplified collision geometry -->
+                        <geom
+                          name="fr3_hand_collision"
+                          type="mesh"
+                          mesh="franka_hand_coll"
+                          rgba="0.25 0.25 0.25 0"
+                          group="3"/>
+
+
+                        <site
+                          name="hand_tcp"
+                          pos="0 0 0.1034"
+                          type="sphere"
+                          size="0.010"
+                          rgba="0 0 1 1"/>
+
+                        <!--
+                          Center of the grasp between the fingertip pads.
+                          This is the site used by the harvesting IK.
+                        -->
+
+                        <site
+                          name="grasp_center"
+                          pos="0 0 0.1834"
+                          type="sphere"
+                          size="0.008"
+                          rgba="0 1 1 1"/>
+
+                        <site
+                          name="tomato_attachment_center"
+                          pos="0 0 0.23304"
+                          type="sphere"
+                          size="0.006"
+                          rgba="1 0 1 0"/>
+
+                        <body gravcomp="1"
+                          name="fr3_leftfinger"
+                          pos="0 0 0.0584">
+
+
+                          <joint
+                            name="fr3_finger_joint1"
+                            type="slide"
+                            axis="0 1 0"
+                            range="0 0.06"
+                            damping="0.3"
+                            limited="true"/>
+
+
+
+                          <!-- Panda adapter replaces the original Franka finger -->
+                          <!-- LEFT Panda adapter assembly -->
+                          <body
+                            name="gelsight_left_adapter_mount"
+                            pos="0 0 0.01525"
+                            quat="0.7071068 -0.7071068 0 0">
+
+                            <geom
+                              name="gelsight_left_adapter_visual"
+                              type="mesh"
+                              mesh="gelsight_panda_adapter_mesh"
+                              rgba="0.05 0.05 0.05 1"
+                              contype="0"
+                              conaffinity="0"
+                              group="2"/>
+
+                            <!--
+                              GelSight origin relative to Panda adapter.
+                              Adapter distal face: Y = -77 mm
+                              GelSight mounting face: Y = -5 mm
+
+                              Sensor origin therefore sits at Y = -82 mm,
+                              with a 180-degree X rotation.
+                            -->
+
+                            <body
+                              name="gelsight_left_sensor_mount"
+                              pos="0 -0.060 0.012"
+                              quat="0.5 -0.5 -0.5 0.5">
+
+                              <geom
+                                name="gelsight_left_shell_visual"
+                                type="mesh"
+                                mesh="gelsight_mini_shell_mesh"
+                                rgba="0.72 0.74 0.76 1"
+                                contype="0"
+                                conaffinity="0"
+                                group="2"/>
+
+                              <geom
+                                name="gelsight_left_shell_collision"
+                                type="box"
+                                pos="0 0 0.000"
+                                size="0.018 0.013 0.018"
+                                rgba="0 0 0 0"
+                                friction="2.0 0.03 0.003"
+                                solref="0.002 1"
+                                solimp="0.995 0.999 0.0002"
+                                condim="4"
+                                contype="1"
+                                conaffinity="1"/>
+
+                              <!-- GelSight sensing area -->
+                              <geom
+                                name="gelsight_left_pad"
+                                type="box"
+                                pos="0 0 0.0146"
+                                size="0.0093 0.00715 0.0010"
+                                rgba="0.10 0.25 0.65 0.8"
+                                friction="2.0 0.02 0.002"
+                                contype="0"
+                                conaffinity="0"
+                                group="3"/>
+
+                              <!-- Robust invisible GelSight collision surface -->
+                              <geom
+                                name="gelsight_left_collision"
+                                type="box"
+                                pos="-0.00011 0.00025 0.00003"
+                                size="0.0190 0.0180 0.0160"
+                                rgba="0 0 0 0"
+                                friction="3.0 0.05 0.005"
+                                solref="0.003 1"
+                                solimp="0.98 0.995 0.0005"
+                                margin="0.001"
+                                condim="4"
+                                contype="1"
+                                conaffinity="1"
+                                group="3"/>
+
+                              <site
+                                name="gelsight_left_pad_site"
+                                pos="0 0 0.0157"
+                                type="box"
+                                size="0.0093 0.00715 0.0005"
+                                rgba="0 1 1 0.6"/>
+
+                              <!-- Simulated GelSight Mini internal camera -->
+                              <camera
+                                name="gelsight_left_camera"
+                                pos="0 0 0"
+                                quat="1 0 0 0"
+                                fovy="70"
+                                resolution="320 240"/>
+
+                            </body>
+                          </body>
+
+                        </body>
+
+                        <body gravcomp="1"
+                          name="fr3_rightfinger"
+                          pos="0 0 0.0584">
+
+                          <joint
+                            name="fr3_finger_joint2"
+                            type="slide"
+                            axis="0 -1 0"
+                            range="0 0.06"
+                            damping="0.3"
+                            limited="true"/>
+
+
+                          <!-- Panda adapter replaces the original Franka finger -->
+                          <!-- RIGHT Panda adapter assembly -->
+                          <body
+                            name="gelsight_right_adapter_mount"
+                            pos="0 0 0.01525"
+                            quat="0 0 0.7071068 -0.7071068">
+
+                            <geom
+                              name="gelsight_right_adapter_visual"
+                              type="mesh"
+                              mesh="gelsight_panda_adapter_mesh"
+                              rgba="0.05 0.05 0.05 1"
+                              contype="0"
+                              conaffinity="0"
+                              group="2"/>
+
+                            <body
+                              name="gelsight_right_sensor_mount"
+                              pos="0 -0.060 0.012"
+                              quat="0.5 -0.5 -0.5 0.5">
+
+                              <geom
+                                name="gelsight_right_shell_visual"
+                                type="mesh"
+                                mesh="gelsight_mini_shell_mesh"
+                                rgba="0.72 0.74 0.76 1"
+                                contype="0"
+                                conaffinity="0"
+                                group="2"/>
+
+
+                              <geom
+                                name="gelsight_right_shell_collision"
+                                type="box"
+                                pos="-0.00011 0.00025 0.00003"
+                                size="0.0177 0.0165 0.0173"
+                                rgba="0 0 0 0"
+                                friction="2.0 0.03 0.003"
+                                solref="0.002 1"
+                                solimp="0.995 0.999 0.0002"
+                                condim="4"
+                                contype="1"
+                                conaffinity="1"/>
+
+                              <!-- GelSight sensing area -->
+                              <geom
+                                name="gelsight_right_pad"
+                                type="box"
+                                pos="0 0 0.0146"
+                                size="0.0093 0.00715 0.0010"
+                                rgba="0.10 0.25 0.65 0.8"
+                                friction="2.0 0.02 0.002"
+                                contype="0"
+                                conaffinity="0"
+                                group="3"/>
+
+                              <!-- Robust invisible GelSight collision surface -->
+                              <geom
+                                name="gelsight_right_collision"
+                                type="box"
+                                pos="-0.00011 0.00025 0.00003"
+                                size="0.0190 0.0180 0.0160"
+                                rgba="0 0 0 0"
+                                friction="3.0 0.05 0.005"
+                                solref="0.003 1"
+                                solimp="0.98 0.995 0.0005"
+                                margin="0.001"
+                                condim="4"
+                                contype="1"
+                                conaffinity="1"
+                                group="3"/>
+
+                              <site
+                                name="gelsight_right_pad_site"
+                                pos="0 0 0.0157"
+                                type="box"
+                                size="0.0093 0.00715 0.0005"
+                                rgba="0 1 1 0.6"/>
+
+                              <!-- Simulated GelSight Mini internal camera -->
+                              <camera
+                                name="gelsight_right_camera"
+                                pos="0 0 0"
+                                quat="1 0 0 0"
+                                fovy="70"
+                                resolution="320 240"/>
+
+                            </body>
+                          </body>
+
+                        </body>
+
+                        <!--
+                          D405 mounting hardware.
+
+                          The calibrated hand-to-camera transform below is
+                          preserved. The added bracket and mounting plate make
+                          the camera housing visibly connected to fr3_hand.
+                        -->
+                        <!-- ========================================================= -->
+                        <!-- Physical curved D405-to-Franka adapter                     -->
+                        <!-- ========================================================= -->
+
+                        <!-- ========================================================= -->
+                        <!-- Curved D405-to-Franka CAD adapter                         -->
+                        <!-- ========================================================= -->
+
+                                                <!-- ========================================================= -->
+                        <!-- Final physical D405-to-Franka CAD mount                    -->
+                        <!-- ========================================================= -->
+
+                        <body
+                          name="d405_franka_mount"
+                          pos="-0.0075 0.00561 -0.00205"
+                          euler="1.5707963268 0 0">
+
+                          <geom
+                            name="d405_franka_mount_geom"
+                            type="mesh"
+                            mesh="d405_franka_mount_mesh"
+                            rgba="0.92 0.92 0.90 1"
+                            contype="0"
+                            conaffinity="0"
+                            group="2"/>
+
+                          <!-- Physical Intel RealSense D405 -->
+                          <!-- Physical Intel RealSense D405 -->
+                          <!-- 16-degree physical camera tilt -->
+                          <body
+                            name="d405_camera_tilt"
+                            pos="0.05752 0.0722 0.004"
+                            euler="0 0 0.2792526803">
+
+                            <body
+                              name="d405_camera_visual"
+                              pos="0 0 0"
+                              euler="1.5707963268 3.1415926536 -4.7123889804">
+
+                              <geom
+                                name="d405_camera_visual_geom"
+                                type="mesh"
+                                mesh="d405_camera_mesh"
+                                rgba="0.75 0.75 0.75 1"
+                                contype="0"
+                                conaffinity="0"
+                                group="2"/>
+
+                              <!-- ================================================= -->
+                              <!-- D405 front-face visual details                    -->
+                              <!-- Visual only: no collision                         -->
+                              <!-- ================================================= -->
+
+                              <!-- Black front panel -->
+                                                            <!-- ================================================= -->
+                              <!-- Rounded D405 black front panel                    -->
+                              <!-- Front face of camera STL is approximately Z = 0  -->
+                              <!-- ================================================= -->
+
+                              <!-- Central vertical rectangle -->
+                                                            <!-- ================================================= -->
+                              <!-- Rounded D405 black front panel                    -->
+                              <!-- Camera STL front face is approximately Z = 0     -->
+                              <!-- ================================================= -->
+
+                              <!-- Central vertical rectangle -->
+                              <geom
+                                name="d405_front_panel_center"
+                                type="box"
+                                pos="0 0 0.0003"
+                                size="0.0195 0.0145 0.00035"
+                                rgba="0.025 0.025 0.030 1"
+                                contype="0"
+                                conaffinity="0"
+                                group="2"/>
+
+                              <!-- Central horizontal rectangle -->
+                              <geom
+                                name="d405_front_panel_horizontal"
+                                type="box"
+                                pos="0 0 0.0003"
+                                size="0.0145 0.0195 0.00035"
+                                rgba="0.025 0.025 0.030 1"
+                                contype="0"
+                                conaffinity="0"
+                                group="2"/>
+
+                              <!-- Top-left rounded corner -->
+                              <geom
+                                name="d405_front_panel_corner_tl"
+                                type="cylinder"
+                                pos="-0.0145 0.0145 0.0003"
+                                size="0.0050 0.00035"
+                                rgba="0.025 0.025 0.030 1"
+                                contype="0"
+                                conaffinity="0"
+                                group="2"/>
+
+                              <!-- Top-right rounded corner -->
+                              <geom
+                                name="d405_front_panel_corner_tr"
+                                type="cylinder"
+                                pos="0.0145 0.0145 0.0003"
+                                size="0.0050 0.00035"
+                                rgba="0.025 0.025 0.030 1"
+                                contype="0"
+                                conaffinity="0"
+                                group="2"/>
+
+                              <!-- Bottom-left rounded corner -->
+                              <geom
+                                name="d405_front_panel_corner_bl"
+                                type="cylinder"
+                                pos="-0.0145 -0.0145 0.0003"
+                                size="0.0050 0.00035"
+                                rgba="0.025 0.025 0.030 1"
+                                contype="0"
+                                conaffinity="0"
+                                group="2"/>
+
+                              <!-- Bottom-right rounded corner -->
+                              <geom
+                                name="d405_front_panel_corner_br"
+                                type="cylinder"
+                                pos="0.0145 -0.0145 0.0003"
+                                size="0.0050 0.00035"
+                                rgba="0.025 0.025 0.030 1"
+                                contype="0"
+                                conaffinity="0"
+                                group="2"/>
+
+                              <!-- ================================================= -->
+                              <!-- D405 two-lens visual                              -->
+                              <!-- ================================================= -->
+
+                              <!-- Left lens outer surround -->
+                              <geom
+                                name="d405_visual_left_lens_ring"
+                                type="cylinder"
+                                pos="-0.010 0 0.0009"
+                                size="0.0042 0.0005"
+                                rgba="0.09 0.09 0.10 1"
+                                contype="0"
+                                conaffinity="0"
+                                group="2"/>
+
+                              <!-- Left lens glass -->
+                              <geom
+                                name="d405_visual_left_lens"
+                                type="cylinder"
+                                pos="-0.010 0 0.0015"
+                                size="0.0028 0.00035"
+                                rgba="0.008 0.012 0.020 1"
+                                contype="0"
+                                conaffinity="0"
+                                group="2"/>
+
+                              <!-- Left inner optical element -->
+                              <geom
+                                name="d405_visual_left_lens_inner"
+                                type="cylinder"
+                                pos="-0.010 0 0.0019"
+                                size="0.0015 0.00015"
+                                rgba="0.04 0.08 0.14 1"
+                                contype="0"
+                                conaffinity="0"
+                                group="2"/>
+
+                              <!-- Right lens outer surround -->
+                              <geom
+                                name="d405_visual_right_lens_ring"
+                                type="cylinder"
+                                pos="0.010 0 0.0009"
+                                size="0.0042 0.0005"
+                                rgba="0.09 0.09 0.10 1"
+                                contype="0"
+                                conaffinity="0"
+                                group="2"/>
+
+                              <!-- Right lens glass -->
+                              <geom
+                                name="d405_visual_right_lens"
+                                type="cylinder"
+                                pos="0.010 0 0.0015"
+                                size="0.0028 0.00035"
+                                rgba="0.008 0.012 0.020 1"
+                                contype="0"
+                                conaffinity="0"
+                                group="2"/>
+
+                              <!-- Right inner optical element -->
+                              <geom
+                                name="d405_visual_right_lens_inner"
+                                type="cylinder"
+                                pos="0.010 0 0.0019"
+                                size="0.0015 0.00015"
+                                rgba="0.04 0.08 0.14 1"
+                                contype="0"
+                                conaffinity="0"
+                                group="2"/>
+
+                              <!-- Actual simulated optical camera at left lens -->
+                              <!-- Actual simulated optical camera at opposite lens -->
+                              <site
+                                name="d405_camera_link_site"
+                                pos="0.010 0 0.0021"
+                                type="sphere"
+                                size="0.002"
+                                rgba="1 0 1 0"/>
+
+                              <camera
+                                name="d405_color"
+                                pos="0.010 0 0.0021"
+                                quat="0 0 1 0"
+                                fovy="69"
+                                resolution="640 480"/>
+
+                              <camera
+                                name="d405_depth"
+                                pos="-0.010 0 0.0021"
+                                quat="0 0 1 0"
+                                fovy="69"
+                                resolution="640 480"/>
+
+                            </body>
+
+                          </body>
+
+
+                          <body
+                            gravcomp="1"
+                            name="d405_mount"
+                            pos="0 0 0.053"
+                            euler="0 0 0">
+
+                            <!-- Main silver D405 housing -->
+                            <geom
+                              name="d405_body"
+                              type="box"
+                              pos="0 0 0"
+                              size="0.012 0.0215 0.0215"
+                              rgba="0.72 0.74 0.76 0"
+                              contype="0"
+                              conaffinity="0"
+                              group="2"/>
+
+                            <!-- Black front face -->
+                            <geom
+                              name="d405_front_panel"
+                              type="box"
+                              pos="0.0128 0 0"
+                              size="0.0010 0.0195 0.0195"
+                              rgba="0.025 0.025 0.028 0"
+                              contype="0"
+                              conaffinity="0"
+                              group="2"/>
+
+                            <!-- Left lens surround -->
+                            <geom
+                              name="d405_left_lens_surround"
+                              type="cylinder"
+                              pos="0.0140 0.0090 0"
+                              size="0.0043 0.0010"
+                              euler="0 90 0"
+                              rgba="0.055 0.055 0.060 0"
+                              contype="0"
+                              conaffinity="0"
+                              group="2"/>
+
+                            <!-- Left optical glass -->
+                            <geom
+                              name="d405_left_lens"
+                              type="cylinder"
+                              pos="0.0152 0.0090 0"
+                              size="0.0028 0.0006"
+                              euler="0 90 0"
+                              rgba="0.01 0.015 0.025 0"
+                              contype="0"
+                              conaffinity="0"
+                              group="2"/>
+
+                            <!-- Left lens inner highlight -->
+                            <geom
+                              name="d405_left_lens_inner"
+                              type="cylinder"
+                              pos="0.0159 0.0090 0"
+                              size="0.0015 0.00025"
+                              euler="0 90 0"
+                              rgba="0.06 0.09 0.14 0"
+                              contype="0"
+                              conaffinity="0"
+                              group="2"/>
+
+                            <!-- Right lens surround -->
+                            <geom
+                              name="d405_right_lens_surround"
+                              type="cylinder"
+                              pos="0.0140 -0.0090 0"
+                              size="0.0043 0.0010"
+                              euler="0 90 0"
+                              rgba="0.055 0.055 0.060 0"
+                              contype="0"
+                              conaffinity="0"
+                              group="2"/>
+
+                            <!-- Right optical glass -->
+                            <geom
+                              name="d405_right_lens"
+                              type="cylinder"
+                              pos="0.0152 -0.0090 0"
+                              size="0.0028 0.0006"
+                              euler="0 90 0"
+                              rgba="0.01 0.015 0.025 0"
+                              contype="0"
+                              conaffinity="0"
+                              group="2"/>
+
+                            <!-- Right lens inner highlight -->
+                            <geom
+                              name="d405_right_lens_inner"
+                              type="cylinder"
+                              pos="0.0159 -0.0090 0"
+                              size="0.0015 0.00025"
+                              euler="0 90 0"
+                              rgba="0.06 0.09 0.14 0"
+                              contype="0"
+                              conaffinity="0"
+                              group="2"/>
+
+
+                            </body>
+
+                          </body>
+
+                      </body>
+
+                    </body>
+
+                    <!-- closes fr3_hand_physical -->
+                    </body>
+
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+
+  </worldbody>
+
+  <!-- ======================================================== -->
+  <!-- Franka Hand mechanical finger synchronization            -->
+  <!-- q2 = q1                                                  -->
+  <!-- ======================================================== -->
+
+  <equality>
+
+    <joint
+      name="fr3_finger_coupling"
+      joint1="fr3_finger_joint1"
+      joint2="fr3_finger_joint2"
+      polycoef="0 1 0 0 0"
+      solref="0.003 1"
+      solimp="0.95 0.99 0.001"/>
+
+  </equality>
+
+  <actuator>
+
+    <!-- Torque-controlled FR3 arm actuators -->
+    <motor
+      name="fr3_joint1"
+      joint="fr3_joint1"
+      gear="1"
+      ctrllimited="true"
+      ctrlrange="-87 87"/>
+
+    <motor
+      name="fr3_joint2"
+      joint="fr3_joint2"
+      gear="1"
+      ctrllimited="true"
+      ctrlrange="-87 87"/>
+
+    <motor
+      name="fr3_joint3"
+      joint="fr3_joint3"
+      gear="1"
+      ctrllimited="true"
+      ctrlrange="-87 87"/>
+
+    <motor
+      name="fr3_joint4"
+      joint="fr3_joint4"
+      gear="1"
+      ctrllimited="true"
+      ctrlrange="-87 87"/>
+
+    <motor
+      name="fr3_joint5"
+      joint="fr3_joint5"
+      gear="1"
+      ctrllimited="true"
+      ctrlrange="-12 12"/>
+
+    <motor
+      name="fr3_joint6"
+      joint="fr3_joint6"
+      gear="1"
+      ctrllimited="true"
+      ctrlrange="-12 12"/>
+
+    <motor
+      name="fr3_joint7"
+      joint="fr3_joint7"
+      gear="1"
+      ctrllimited="true"
+      ctrlrange="-12 12"/>
+
+    <!-- Keep the gripper position-controlled -->
+    <position
+      name="fr3_finger_joint1"
+      joint="fr3_finger_joint1"
+      kp="10000"
+      kv="100"
+      ctrlrange="0 0.06"
+      forcerange="-35 35"/>
+
+    <position
+      name="fr3_finger_joint2"
+      joint="fr3_finger_joint2"
+      kp="10000"
+      kv="100"
+      ctrlrange="0 0.06"
+      forcerange="-35 35"/>
+
+  </actuator>
+
+  <sensor>
+
+    <touch
+      name="gelsight_left_touch"
+      site="gelsight_left_pad_site"/>
+
+    <touch
+      name="gelsight_right_touch"
+      site="gelsight_right_pad_site"/>
+
+  </sensor>
+
+  <contact>
+    <exclude body1="fr3_link0" body2="fr3_link1"/>
+  </contact>
+
+  <keyframe>
+
+    <key
+      name="home"
+      qpos="0 0 0 -1.57079 0 1.57079 -0.7853 0.06 0.06"
+      ctrl="0 0 0 0 0 0 0 0.04 0.04"/>
+
+  </keyframe>
+
+</mujoco>

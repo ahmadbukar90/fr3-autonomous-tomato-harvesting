@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<robot
+  xmlns:xacro="http://www.ros.org/wiki/xacro"
+  name="fr3_mujoco">
+
+  <!-- Runtime options -->
+  <xacro:arg name="headless" default="false"/>
+  <xacro:arg name="camera_publish_rate" default="10.0"/>
+  <xacro:arg name="special_connection" default=""/>
+
+  <!-- Official Franka robot geometry -->
+  <xacro:include
+    filename="$(find franka_description)/robots/common/franka_robot.xacro"/>
+
+  <!-- Project-specific MuJoCo ros2_control definition -->
+  <xacro:include
+    filename="$(find mujoco_fr3_bringup)/urdf/fr3_mujoco.ros2_control.xacro"/>
+
+  <!--
+    Instantiate the official FR3 kinematic, collision, inertial, and visual
+    description.
+
+    The stock ros2_control block is disabled because it would load the
+    physical Franka hardware interface. Our MuJoCo hardware block is added
+    separately below.
+  -->
+  <xacro:franka_robot
+    arm_id="fr3"
+
+    joint_limits="${
+      xacro.load_yaml(
+        '$(find franka_description)/robots/fr3/joint_limits.yaml'
+      )
+    }"
+
+    inertials="${
+      xacro.load_yaml(
+        '$(find franka_description)/robots/fr3/inertials.yaml'
+      )
+    }"
+
+    kinematics="${
+      xacro.load_yaml(
+        '$(find franka_description)/robots/fr3/kinematics.yaml'
+      )
+    }"
+
+    dynamics="${
+      xacro.load_yaml(
+        '$(find franka_description)/robots/fr3/dynamics.yaml'
+      )
+    }"
+
+    parent="world"
+    connected_to="base"
+
+    xyz="0 0 0"
+    rpy="0 0 0"
+
+    hand="true"
+    ee_id="franka_hand"
+    special_connection="$(arg special_connection)"
+
+    xyz_ee="0 0 0"
+    rpy_ee="0 0 ${-pi / 4}"
+
+    tcp_xyz="0 0 0.1034"
+    tcp_rpy="0 0 0"
+
+    safety_distance="0.03"
+    with_sc="false"
+
+    gazebo="false"
+    ros2_control="false"
+
+    robot_ip=""
+    use_fake_hardware="false"
+    fake_sensor_commands="false"
+    gazebo_effort="false"
+
+    no_prefix="false"
+    arm_prefix=""
+
+    description_pkg="franka_description">
+  </xacro:franka_robot>
+
+  <!-- Midpoint between the two gripper fingertip pads -->
+  <link name="fr3_grasp_center"/>
+
+  <joint
+    name="fr3_hand_to_grasp_center"
+    type="fixed">
+    <parent link="fr3_hand"/>
+    <child link="fr3_grasp_center"/>
+
+    <origin xyz="0 0 0.13365" rpy="0 0 0.7853981633974483"/>
+  </joint>
+
+  <!-- ========================================================= -->
+  <!-- Intel RealSense D405 TF chain (matches the MuJoCo model) -->
+  <!-- ========================================================= -->
+
+
+    <!-- ========================================================= -->
+  <!-- D405 TF chain matched exactly to the MuJoCo camera pose -->
+  <!-- ========================================================= -->
+
+    <!-- D405 optical frame calibrated against the ROS fr3_hand frame -->
+
+  <link name="d405_mount"/>
+
+  <joint
+    name="fr3_hand_to_d405_mount"
+    type="fixed">
+    <parent link="fr3_hand"/>
+    <child link="d405_mount"/>
+
+  <origin
+    xyz="0.04089281 0.02902755 0.07216865"
+    rpy="2.86233997 0.00000000 2.35619449"/>
+  </joint>
+
+  <link name="d405_color_optical_frame"/>
+
+  <joint
+  name="d405_mount_to_color_optical"
+  type="fixed">
+  <parent link="d405_mount"/>
+  <child link="d405_color_optical_frame"/>
+
+  <origin
+    xyz="0 0 0"
+    rpy="3.141592653589793 0 0"/>
+  </joint>
+
+  <!-- Depth optical frame for opposite D405 lens -->
+  <link name="d405_depth_optical_frame"/>
+
+  <joint
+    name="d405_mount_to_depth_optical"
+    type="fixed">
+
+    <parent link="d405_mount"/>
+    <child link="d405_depth_optical_frame"/>
+
+    <origin
+      xyz="0 -0.020 0"
+      rpy="3.141592653589793 0 0"/>
+
+  </joint>
+
+
+  <!-- Official MuJoCo ros2_control hardware integration -->
+  <xacro:fr3_mujoco_ros2_control
+    headless="$(arg headless)"
+    camera_publish_rate="$(arg camera_publish_rate)"/>
+
+</robot>

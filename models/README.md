@@ -1,11 +1,9 @@
-# Local YOLO model
+# YOLO model
 
-This repository intentionally does not include trained model weights.
+`best_v2.pt` is included for the simulation quick start.
 
-Place your local model at:
+To use another trained model:
 
-    models/best_v2.pt
-
-Or override its location:
-
-    export TOMATO_MODEL_PATH=/absolute/path/to/best_v2.pt
+```bash
+ros2 launch fr3_tomato_harvesting autonomous_simulation.launch.py model_path:=/absolute/path/to/your_model.pt
+```

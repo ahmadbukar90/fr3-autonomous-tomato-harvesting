@@ -49,3 +49,5 @@ sdk-*/
 .vscode/
 .idea/
 .DS_Store
+
+src/franka_ros2/

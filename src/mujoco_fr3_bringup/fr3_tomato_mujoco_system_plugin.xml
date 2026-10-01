@@ -1,0 +1,12 @@
+<library path="fr3_tomato_mujoco_system">
+  <class
+    name="mujoco_fr3_bringup/FR3TomatoMujocoSystem"
+    type="mujoco_fr3_bringup::FR3TomatoMujocoSystem"
+    base_class_type="hardware_interface::SystemInterface">
+
+    <description>
+      FR3 MuJoCo system with tomato contact and detachment physics.
+    </description>
+
+  </class>
+</library>

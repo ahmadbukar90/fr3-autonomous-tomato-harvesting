@@ -2,42 +2,66 @@
 
 ROS 2 Humble software for autonomous tomato harvesting with a Franka Research 3 (FR3).
 
-## Scope
+## Included
 
-- MuJoCo simulation and physical-FR3 workflows
-- RealSense D405 RGB-D perception with YOLO
-- MoveIt harvesting control
-- ArUco GridBoard eye-in-hand calibration support
-- GelSight-compatible simulation logging
+- MuJoCo FR3 tomato-harvesting scene and required assets
+- YOLO tomato model at `models/best_v2.pt`
+- Tomato detection and harvesting ROS 2 nodes
+- Custom `TomatoTarget` message
+- One-command simulation launch workflow
 
-Only selected source code is included. Robot IPs, calibration results, model weights, datasets, recordings, build files, and vendor SDKs are excluded.
+## Simulation quick start
 
-## ROS 2 executables
-
-- `aruco_gridboard_detector`
-- `hardware_tomato_detector`
-- `hardware_harvest_controller`
-- `simulation_tomato_detector`
-- `simulation_harvest_controller`
-- `harvest_dataset_logger`
-
-## Requirements
-
-Ubuntu 22.04, ROS 2 Humble, Franka ROS 2, MoveIt, and the custom `tomato_interfaces` package are required. Install Python packages with:
+Use Ubuntu 22.04 with ROS 2 Humble already installed.
 
 ```bash
-python3 -m pip install -r requirements.txt
+git clone https://github.com/ahmadbukar90/fr3-autonomous-tomato-harvesting.git
+cd fr3-autonomous-tomato-harvesting
+./scripts/setup_simulation.sh
 ```
 
-## Local model and data
-
-The default model path is `models/best_v2.pt`; the logger writes to `data/harvest_dataset/`. Both are ignored by Git.
+Then open a new terminal:
 
 ```bash
-export TOMATO_MODEL_PATH=/path/to/best_v2.pt
-export TOMATO_DATASET_ROOT=/path/to/harvest_dataset
+cd ~/fr3-autonomous-tomato-harvesting
+source .venv/bin/activate
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+ros2 launch fr3_tomato_harvesting autonomous_simulation.launch.py
 ```
 
-## Safety
+The launch starts MuJoCo, FR3 controllers, MoveIt, tomato detection, and the autonomous simulation harvest controller.
 
-Start in simulation. Before physical tests, validate calibration, TF, workspace limits, collision scene, controller state, speed limits, gripper behavior, and emergency-stop procedure. No hardware launch configuration is included.
+For no display window:
+
+```bash
+ros2 launch fr3_tomato_harvesting autonomous_simulation.launch.py headless:=true
+```
+
+To use another model:
+
+```bash
+ros2 launch fr3_tomato_harvesting autonomous_simulation.launch.py model_path:=/absolute/path/to/your_model.pt
+```
+
+## Hardware
+
+Hardware is intentionally separate from the simulation quick start.
+
+Before hardware use, validate camera calibration and TF, robot communication, workspace limits, collision scene, speed limits, gripper behavior, and the emergency-stop procedure.
+
+Do not use the simulation launcher for the physical robot.
+
+## Layout
+
+```text
+src/fr3_tomato_harvesting/   Main Python package and launch files
+src/mujoco_fr3_bringup/      Custom MuJoCo FR3 control package
+src/tomato_interfaces/       Custom ROS 2 message package
+models/                      Included YOLO model
+dependencies/                External dependency manifest
+scripts/                     One-time setup scripts
+```
+
+Simulation Python requirements are in `requirements.txt`.
+Hardware-only Python requirements are in `requirements-hardware.txt`.

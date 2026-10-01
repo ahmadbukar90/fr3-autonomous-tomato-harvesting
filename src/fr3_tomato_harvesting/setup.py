@@ -1,3 +1,4 @@
+from glob import glob
 from setuptools import find_packages, setup
 
 package_name = "fr3_tomato_harvesting"
@@ -12,6 +13,8 @@ setup(
             ["resource/" + package_name],
         ),
         ("share/" + package_name, ["package.xml"]),
+        ("share/" + package_name + "/launch", glob("launch/*.launch.py")),
+        ("share/" + package_name + "/models", ["../../models/best_v2.pt"]),
     ],
     install_requires=["setuptools"],
     zip_safe=True,

@@ -1,0 +1,15 @@
+<library path="gelsight_contact_plugin">
+
+  <class
+    name="mujoco_fr3_bringup/GelSightContactPlugin"
+    type="mujoco_fr3_bringup::GelSightContactPlugin"
+    base_class_type="mujoco_ros2_control_plugins::MuJoCoROS2ControlPluginBase">
+
+    <description>
+      Publishes MuJoCo contact position and penetration
+      information for the left and right GelSight pads.
+    </description>
+
+  </class>
+
+</library>

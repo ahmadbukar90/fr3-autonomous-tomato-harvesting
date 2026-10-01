@@ -32,4 +32,12 @@
   <export>
     <build_type>ament_python</build_type>
   </export>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>moveit_ros_move_group</exec_depend>
+  <exec_depend>franka_fr3_moveit_config</exec_depend>
+  <exec_depend>franka_description</exec_depend>
+  <exec_depend>mujoco_fr3_bringup</exec_depend>
 </package>

@@ -1,0 +1,3405 @@
+<mujoco model="tomato_harvesting_scene">
+  <!-- scene version: grasp-weld-v3 -->
+
+  <!-- fr3.xml is in the same directory as this scene file. -->
+  <include file="fr3.xml"/>
+
+  <statistic center="0.4 0 0.5" extent="1.2"/>
+
+  <visual>
+    <headlight
+      diffuse="0.6 0.6 0.6"
+      ambient="0.3 0.3 0.3"
+      specular="0 0 0"/>
+
+    <rgba haze="0.15 0.25 0.35 1"/>
+
+    <global
+      azimuth="120"
+      elevation="-20"/>
+  </visual>
+
+  <asset>
+    <texture
+      type="skybox"
+      builtin="gradient"
+      rgb1="0.3 0.5 0.7"
+      rgb2="0 0 0"
+      width="512"
+      height="3072"/>
+
+    <texture
+      type="2d"
+      name="groundplane"
+      builtin="checker"
+      mark="edge"
+      rgb1="0.2 0.3 0.4"
+      rgb2="0.1 0.2 0.3"
+      markrgb="0.8 0.8 0.8"
+      width="300"
+      height="300"/>
+
+    <material
+      name="groundplane"
+      texture="groundplane"
+      texuniform="true"
+      texrepeat="5 5"
+      reflectance="0.2"/>
+
+    <mesh
+      name="tomato_leaf_mesh"
+      file="tomato_plant/Leaf.stl"
+      scale="0.00065 0.00065 0.00065"/>
+
+  </asset>
+
+  <worldbody>
+
+    <light
+      pos="0 0 3"
+      dir="0 0 -1"
+      directional="true"/>
+
+    <geom
+      name="floor"
+      type="plane"
+      size="5 5 0.1"
+      material="groundplane"/>
+
+    <!-- Harvesting table: 70 cm high, light gray -->
+    <body name="table" pos="0.520091 0 0.685">
+
+      <!--
+        Tabletop:
+        3 cm thick
+        top surface = 0.70 m
+      -->
+      <geom
+        name="table_top"
+        type="box"
+        size="0.50 0.61 0.015"
+        rgba="0.88 0.88 0.88 1"/>
+
+      <geom
+        name="table_leg_1"
+        type="box"
+        pos="0.485 0.595 -0.3425"
+        size="0.015 0.015 0.3425"
+        rgba="0.88 0.88 0.88 1"/>
+
+      <geom
+        name="table_leg_2"
+        type="box"
+        pos="-0.485 0.595 -0.3425"
+        size="0.015 0.015 0.3425"
+        rgba="0.88 0.88 0.88 1"/>
+
+      <geom
+        name="table_leg_3"
+        type="box"
+        pos="0.485 -0.595 -0.3425"
+        size="0.015 0.015 0.3425"
+        rgba="0.88 0.88 0.88 1"/>
+
+      <geom
+        name="table_leg_4"
+        type="box"
+        pos="-0.485 -0.595 -0.3425"
+        size="0.015 0.015 0.3425"
+        rgba="0.88 0.88 0.88 1"/>
+
+      <!--
+        Undershelf:
+      -->
+      <geom
+        name="table_undershelf"
+        type="box"
+        pos="0 0 -0.55"
+        size="0.47 0.58 0.015"
+        rgba="0.88 0.88 0.88 1"/>
+
+    </body>
+
+    <!-- ====================================================== -->
+    <!-- Tomato support frame                                   -->
+    <!-- Two ground-mounted tripod stands                       -->
+    <!-- Vertical frame plane matches table back edge x=1.015182-->
+    <!-- Stand centers are 7 cm outside table sides             -->
+    <!-- Tripod junction height = 0.45 m                        -->
+    <!-- Tripod feet are equally spaced by 120 degrees          -->
+    <!-- All structural members are 20 mm diameter              -->
+    <!-- ====================================================== -->
+
+    <body name="tomato_support_frame">
+
+      <!-- ==================================================== -->
+      <!-- LEFT STAND                                           -->
+      <!-- ==================================================== -->
+
+      <geom
+        name="support_left_vertical"
+        type="cylinder"
+        fromto="1.015182 0.68 0.45
+                1.015182 0.68 1.70"
+        size="0.01"
+        rgba="0.08 0.08 0.08 1"/>
+
+      <geom
+        name="support_left_leg_1"
+        type="cylinder"
+        fromto="1.015182 0.68 0.45
+                1.015182 0.93 0.00"
+        size="0.01"
+        rgba="0.08 0.08 0.08 1"/>
+
+      <geom
+        name="support_left_leg_2"
+        type="cylinder"
+        fromto="1.015182 0.68 0.45
+                0.798676 0.555 0.00"
+        size="0.01"
+        rgba="0.08 0.08 0.08 1"/>
+
+      <geom
+        name="support_left_leg_3"
+        type="cylinder"
+        fromto="1.015182 0.68 0.45
+                1.231688 0.555 0.00"
+        size="0.01"
+        rgba="0.08 0.08 0.08 1"/>
+
+
+      <!-- ==================================================== -->
+      <!-- RIGHT STAND                                          -->
+      <!-- ==================================================== -->
+
+      <geom
+        name="support_right_vertical"
+        type="cylinder"
+        fromto="1.015182 -0.68 0.45
+                1.015182 -0.68 1.70"
+        size="0.01"
+        rgba="0.08 0.08 0.08 1"/>
+
+      <geom
+        name="support_right_leg_1"
+        type="cylinder"
+        fromto="1.015182 -0.68 0.45
+                1.015182 -0.93 0.00"
+        size="0.01"
+        rgba="0.08 0.08 0.08 1"/>
+
+      <geom
+        name="support_right_leg_2"
+        type="cylinder"
+        fromto="1.015182 -0.68 0.45
+                1.231688 -0.555 0.00"
+        size="0.01"
+        rgba="0.08 0.08 0.08 1"/>
+
+      <geom
+        name="support_right_leg_3"
+        type="cylinder"
+        fromto="1.015182 -0.68 0.45
+                0.798676 -0.555 0.00"
+        size="0.01"
+        rgba="0.08 0.08 0.08 1"/>
+
+
+      <!-- ==================================================== -->
+      <!-- Horizontal top support                               -->
+      <!-- ==================================================== -->
+
+      <geom
+        name="support_top_horizontal"
+        type="cylinder"
+        fromto="1.015182 -0.69 1.70
+                1.015182 0.69 1.70"
+        size="0.01"
+        rgba="0.08 0.08 0.08 1"/>
+
+    </body>
+
+    <!-- ====================================================== -->
+    <!-- Vertical tomato vines                                  -->
+    <!--                                                        -->
+    <!-- Main vine diameter = 16 mm                             -->
+    <!-- Main vine radius   = 0.008 m                           -->
+    <!-- Peduncle diameter  = 5.5 mm                            -->
+    <!-- Peduncle radius    = 0.00275 m                         -->
+    <!--                                                        -->
+    <!-- Vines extend from table back edge z=0.70               -->
+    <!-- up to horizontal support z=1.70                        -->
+    <!-- ====================================================== -->
+
+    <!-- ====================================================== -->
+    <!-- Vertical tomato vines                                  -->
+    <!--                                                        -->
+    <!-- Main vine diameter = 16 mm                             -->
+    <!-- Main vine radius   = 0.008 m                           -->
+    <!-- Peduncle diameter  = 5.5 mm                            -->
+    <!-- Peduncle radius    = 0.00275 m                         -->
+    <!--                                                        -->
+    <!-- Vines extend from table back edge z=0.70               -->
+    <!-- up to horizontal support z=1.70                        -->
+    <!--                                                        -->
+    <!-- Each vine is made from several connected capsule       -->
+    <!-- segments to create a slightly natural/wavy shape.      -->
+    <!-- ====================================================== -->
+
+      <!-- ==================================================== -->
+      <!-- VINE 1: irregular S-bend                             -->
+      <!-- ==================================================== -->
+
+      <!-- ==================================================== -->
+      <!-- VINE 1: irregular S-bend                             -->
+      <!-- ==================================================== -->
+
+      <geom name="vine_1_segment_1" type="capsule"
+        fromto="1.015182 -0.439000 0.700000 0.998000 -0.431000 0.900000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_1_segment_2" type="capsule"
+        fromto="0.998000 -0.431000 0.900000 1.029000 -0.450000 1.100000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_1_segment_3" type="capsule"
+        fromto="1.029000 -0.450000 1.100000 1.006000 -0.434000 1.300000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_1_segment_4" type="capsule"
+        fromto="1.006000 -0.434000 1.300000 1.024000 -0.445000 1.500000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_1_segment_5" type="capsule"
+        fromto="1.024000 -0.445000 1.500000 1.015182 -0.439000 1.700000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+
+      <!-- ==================================================== -->
+      <!-- VINE 2: lower bend toward robot, straighter top      -->
+      <!-- ==================================================== -->
+
+      <geom name="vine_2_segment_1" type="capsule"
+        fromto="1.015182 -0.263400 0.700000 1.034000 -0.270400 0.900000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_2_segment_2" type="capsule"
+        fromto="1.034000 -0.270400 0.900000 1.039000 -0.254400 1.100000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_2_segment_3" type="capsule"
+        fromto="1.039000 -0.254400 1.100000 1.022000 -0.267400 1.300000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_2_segment_4" type="capsule"
+        fromto="1.022000 -0.267400 1.300000 1.010000 -0.260400 1.500000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_2_segment_5" type="capsule"
+        fromto="1.010000 -0.260400 1.500000 1.015182 -0.263400 1.700000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+
+      <!-- ==================================================== -->
+      <!-- VINE 3: pronounced asymmetric S                      -->
+      <!-- ==================================================== -->
+
+      <geom name="vine_3_segment_1" type="capsule"
+        fromto="1.015182 -0.087800 0.700000 0.993000 -0.095800 0.900000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_3_segment_2" type="capsule"
+        fromto="0.993000 -0.095800 0.900000 1.004000 -0.076800 1.100000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_3_segment_3" type="capsule"
+        fromto="1.004000 -0.076800 1.100000 1.037000 -0.083800 1.300000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_3_segment_4" type="capsule"
+        fromto="1.037000 -0.083800 1.300000 1.025000 -0.098800 1.500000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_3_segment_5" type="capsule"
+        fromto="1.025000 -0.098800 1.500000 1.015182 -0.087800 1.700000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+
+      <!-- ==================================================== -->
+      <!-- VINE 4: broad bow with small upper kink              -->
+      <!-- ==================================================== -->
+
+      <geom name="vine_4_segment_1" type="capsule"
+        fromto="1.015182 0.087800 0.700000 1.027000 0.073800 0.900000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_4_segment_2" type="capsule"
+        fromto="1.027000 0.073800 0.900000 1.036000 0.082800 1.100000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_4_segment_3" type="capsule"
+        fromto="1.036000 0.082800 1.100000 1.031000 0.103800 1.300000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_4_segment_4" type="capsule"
+        fromto="1.031000 0.103800 1.300000 1.001000 0.092800 1.500000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_4_segment_5" type="capsule"
+        fromto="1.001000 0.092800 1.500000 1.015182 0.087800 1.700000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+
+      <!-- ==================================================== -->
+      <!-- VINE 5: relatively straight lower half, wavy upper   -->
+      <!-- ==================================================== -->
+
+      <geom name="vine_5_segment_1" type="capsule"
+        fromto="1.015182 0.263400 0.700000 1.009000 0.267400 0.900000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_5_segment_2" type="capsule"
+        fromto="1.009000 0.267400 0.900000 1.013000 0.258400 1.100000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_5_segment_3" type="capsule"
+        fromto="1.013000 0.258400 1.100000 0.992000 0.275400 1.300000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_5_segment_4" type="capsule"
+        fromto="0.992000 0.275400 1.300000 1.031000 0.256400 1.500000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_5_segment_5" type="capsule"
+        fromto="1.031000 0.256400 1.500000 1.015182 0.263400 1.700000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+
+      <!-- ==================================================== -->
+      <!-- VINE 6: stronger lower S, gentle upper return        -->
+      <!-- ==================================================== -->
+
+      <geom name="vine_6_segment_1" type="capsule"
+        fromto="1.015182 0.439000 0.700000 1.038000 0.449000 0.900000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_6_segment_2" type="capsule"
+        fromto="1.038000 0.449000 0.900000 1.025000 0.427000 1.100000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_6_segment_3" type="capsule"
+        fromto="1.025000 0.427000 1.100000 0.995000 0.435000 1.300000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_6_segment_4" type="capsule"
+        fromto="0.995000 0.435000 1.300000 1.007000 0.447000 1.500000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+      <geom name="vine_6_segment_5" type="capsule"
+        fromto="1.007000 0.447000 1.500000 1.015182 0.439000 1.700000"
+        size="0.008" rgba="0.10 0.45 0.10 1"
+        contype="0" conaffinity="0"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <!-- GENERATED RANDOM VINE LEAVES: START -->
+
+      <!-- Leaf 1, vine 1 -->
+
+
+
+      <geom
+        name="vine_1_leaf_1"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.005336 -0.425877 0.831331"
+        euler="-0.740592 0.000000 1.390287"
+        rgba="0.0302 0.4502 0.0302 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 2, vine 1 -->
+
+
+
+      <geom
+        name="vine_1_leaf_2"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.007167 -0.439998 1.401741"
+        euler="-1.027292 0.000000 3.191927"
+        rgba="0.0859 0.5059 0.0859 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 3, vine 1 -->
+
+
+
+      <geom
+        name="vine_1_leaf_3"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.025718 -0.436807 1.597715"
+        euler="-0.929719 0.000000 0.717692"
+        rgba="0.1017 0.5217 0.1017 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 4, vine 1 -->
+
+
+
+      <geom
+        name="vine_1_leaf_4"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.025301 -0.451954 1.164277"
+        euler="-0.862620 0.000000 5.192239"
+        rgba="0.0759 0.4959 0.0759 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 5, vine 2 -->
+
+
+
+      <geom
+        name="vine_2_leaf_5"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.017660 -0.272295 0.782470"
+        euler="-0.926899 0.000000 3.991350"
+        rgba="0.1139 0.5339 0.1139 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 6, vine 2 -->
+
+
+
+      <geom
+        name="vine_2_leaf_6"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.044465 -0.260014 1.108751"
+        euler="-0.635900 0.000000 5.600870"
+        rgba="0.0875 0.5075 0.0875 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 7, vine 2 -->
+
+
+
+      <geom
+        name="vine_2_leaf_7"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.032719 -0.267083 1.265186"
+        euler="-0.708047 0.000000 6.037449"
+        rgba="0.0707 0.4907 0.0707 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 8, vine 3 -->
+
+
+
+      <geom
+        name="vine_3_leaf_8"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="0.997902 -0.085566 0.825027"
+        euler="-0.678126 0.000000 2.011651"
+        rgba="0.0852 0.5052 0.0852 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 9, vine 3 -->
+
+
+
+      <geom
+        name="vine_3_leaf_9"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.032473 -0.092358 1.480150"
+        euler="-1.022590 0.000000 0.667731"
+        rgba="0.0993 0.5193 0.0993 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 10, vine 4 -->
+
+
+
+      <geom
+        name="vine_4_leaf_10"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.029290 0.081974 0.806101"
+        euler="-0.943449 0.000000 0.201481"
+        rgba="0.0750 0.4950 0.0750 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 11, vine 4 -->
+
+
+
+      <geom
+        name="vine_4_leaf_11"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.040252 0.090396 1.109241"
+        euler="-0.799540 0.000000 0.975930"
+        rgba="0.0668 0.4868 0.0668 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 12, vine 5 -->
+
+
+
+      <geom
+        name="vine_5_leaf_12"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.010236 0.273726 0.820910"
+        euler="-0.991900 0.000000 1.722435"
+        rgba="0.0890 0.5090 0.0890 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 13, vine 5 -->
+
+
+
+      <geom
+        name="vine_5_leaf_13"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.015624 0.256409 1.134842"
+        euler="-0.854213 0.000000 5.615659"
+        rgba="0.0645 0.4845 0.0645 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 14, vine 5 -->
+
+
+
+      <geom
+        name="vine_5_leaf_14"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.003285 0.269372 1.263449"
+        euler="-0.628022 0.000000 5.909350"
+        rgba="0.0823 0.5023 0.0823 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 15, vine 6 -->
+
+
+
+      <geom
+        name="vine_6_leaf_15"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.018628 0.426306 1.187841"
+        euler="-0.670745 0.000000 5.729369"
+        rgba="0.0813 0.5013 0.0813 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 16, vine 6 -->
+
+
+
+      <geom
+        name="vine_6_leaf_16"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.032718 0.448089 0.794839"
+        euler="-0.854927 0.000000 0.574417"
+        rgba="0.0808 0.5008 0.0808 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 17, vine 6 -->
+
+
+
+      <geom
+        name="vine_6_leaf_17"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="0.994303 0.441800 1.421465"
+        euler="-1.029851 0.000000 3.202561"
+        rgba="0.0529 0.4729 0.0529 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 18, vine 6 -->
+
+
+
+      <geom
+        name="vine_6_leaf_18"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.013034 0.451443 1.574451"
+        euler="-0.732224 0.000000 1.187967"
+        rgba="0.0669 0.4869 0.0669 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <!-- Leaf 19, vine 6 -->
+
+
+
+      <geom
+        name="vine_6_leaf_19"
+        type="mesh"
+        mesh="tomato_leaf_mesh"
+        pos="1.038712 0.436353 1.012025"
+        euler="-0.709574 0.000000 6.242602"
+        rgba="0.0673 0.4873 0.0673 1"
+        contype="0"
+        conaffinity="0"/>
+      <!-- GENERATED RANDOM VINE LEAVES: END -->
+
+    <!-- ====================================================== -->
+    <!-- GENERATED MULTI-TOMATO SCENE                            -->
+    <!-- 30 tomatoes: 3 on outer vines, 6 on inner vines -->
+    <!-- ====================================================== -->
+
+    <!-- Tomato 1: vine 3, red,
+         diameter=6.37 cm -->
+
+    <body
+      name="tomato_1_stem_tip"
+      pos="0.979773 -0.081435 1.193991">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        39.8 degrees.
+      -->
+
+      <geom
+        name="tomato_1_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.046077
+                0.000000
+                0.038431"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_1"
+      pos="0.979773 -0.081435 1.162126">
+
+      <freejoint
+        name="tomato_1_freejoint"/>
+
+      <geom
+        name="tomato_1_geom"
+        type="sphere"
+        size="0.031864"
+        mass="0.050552"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_1_calyx"
+        type="cylinder"
+        pos="0 0 0.033864"
+        size="0.011949 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_1_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 2: vine 3, red,
+         diameter=7.48 cm -->
+
+    <body
+      name="tomato_2_stem_tip"
+      pos="0.967252 -0.092092 1.591617">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        30.4 degrees.
+      -->
+
+      <geom
+        name="tomato_2_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.051760
+                0.000000
+                0.030346"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_2"
+      pos="0.967252 -0.092092 1.554195">
+
+      <freejoint
+        name="tomato_2_freejoint"/>
+
+      <geom
+        name="tomato_2_geom"
+        type="sphere"
+        size="0.037422"
+        mass="0.081887"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_2_calyx"
+        type="cylinder"
+        pos="0 0 0.039422"
+        size="0.014033 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_2_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 3: vine 3, red,
+         diameter=7.83 cm -->
+
+    <body
+      name="tomato_3_stem_tip"
+      pos="0.953994 -0.077484 1.091851">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        27.5 degrees.
+      -->
+
+      <geom
+        name="tomato_3_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.053230
+                0.000000
+                0.027687"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_3"
+      pos="0.953994 -0.077484 1.052722">
+
+      <freejoint
+        name="tomato_3_freejoint"/>
+
+      <geom
+        name="tomato_3_geom"
+        type="sphere"
+        size="0.039129"
+        mass="0.093610"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_3_calyx"
+        type="cylinder"
+        pos="0 0 0.041129"
+        size="0.014673 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_3_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 4: vine 3, red,
+         diameter=6.76 cm -->
+
+    <body
+      name="tomato_4_stem_tip"
+      pos="0.949953 -0.086879 0.958192">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        36.5 degrees.
+      -->
+
+      <geom
+        name="tomato_4_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.048212
+                0.000000
+                0.035716"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_4"
+      pos="0.949953 -0.086879 0.924387">
+
+      <freejoint
+        name="tomato_4_freejoint"/>
+
+      <geom
+        name="tomato_4_geom"
+        type="sphere"
+        size="0.033805"
+        mass="0.060361"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_4_calyx"
+        type="cylinder"
+        pos="0 0 0.035805"
+        size="0.012677 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_4_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 5: vine 3, red,
+         diameter=6.70 cm -->
+
+    <body
+      name="tomato_5_stem_tip"
+      pos="0.979592 -0.095711 1.422650">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        37.1 degrees.
+      -->
+
+      <geom
+        name="tomato_5_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.047879
+                0.000000
+                0.036161"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_5"
+      pos="0.979592 -0.095711 1.389157">
+
+      <freejoint
+        name="tomato_5_freejoint"/>
+
+      <geom
+        name="tomato_5_geom"
+        type="sphere"
+        size="0.033493"
+        mass="0.058706"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_5_calyx"
+        type="cylinder"
+        pos="0 0 0.035493"
+        size="0.012560 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_5_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 6: vine 3, red,
+         diameter=6.13 cm -->
+
+    <body
+      name="tomato_6_stem_tip"
+      pos="0.990385 -0.086231 1.292358">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        41.9 degrees.
+      -->
+
+      <geom
+        name="tomato_6_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.044671
+                0.000000
+                0.040057"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_6"
+      pos="0.990385 -0.086231 1.261701">
+
+      <freejoint
+        name="tomato_6_freejoint"/>
+
+      <geom
+        name="tomato_6_geom"
+        type="sphere"
+        size="0.030657"
+        mass="0.045021"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_6_calyx"
+        type="cylinder"
+        pos="0 0 0.032657"
+        size="0.011496 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_6_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 7: vine 1, red,
+         diameter=6.48 cm -->
+
+    <body
+      name="tomato_7_stem_tip"
+      pos="0.960085 -0.434453 1.270505">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        39.0 degrees.
+      -->
+
+      <geom
+        name="tomato_7_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.046656
+                0.000000
+                0.037726"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_7"
+      pos="0.960085 -0.434453 1.238128">
+
+      <freejoint
+        name="tomato_7_freejoint"/>
+
+      <geom
+        name="tomato_7_geom"
+        type="sphere"
+        size="0.032377"
+        mass="0.053032"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_7_calyx"
+        type="cylinder"
+        pos="0 0 0.034377"
+        size="0.012141 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_7_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 8: vine 1, green,
+         diameter=6.06 cm -->
+
+    <body
+      name="tomato_8_stem_tip"
+      pos="0.978990 -0.445999 1.109500">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        42.5 degrees.
+      -->
+
+      <geom
+        name="tomato_8_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.044259
+                0.000000
+                0.040511"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_8"
+      pos="0.978990 -0.445999 1.079187">
+
+      <freejoint
+        name="tomato_8_freejoint"/>
+
+      <geom
+        name="tomato_8_geom"
+        type="sphere"
+        size="0.030313"
+        mass="0.043520"
+        friction="1.5 0.02 0.002"
+        solref="0.015 1"
+        solimp="0.85 0.98 0.0012 0.5 2"
+        condim="4"
+        rgba="0.08 0.55 0.10 1"/>
+
+      <geom
+        name="tomato_8_calyx"
+        type="cylinder"
+        pos="0 0 0.032313"
+        size="0.011367 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_8_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 9: vine 1, red,
+         diameter=6.49 cm -->
+
+    <body
+      name="tomato_9_stem_tip"
+      pos="0.974227 -0.445079 1.010584">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        38.8 degrees.
+      -->
+
+      <geom
+        name="tomato_9_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.046744
+                0.000000
+                0.037617"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_9"
+      pos="0.974227 -0.445079 0.978128">
+
+      <freejoint
+        name="tomato_9_freejoint"/>
+
+      <geom
+        name="tomato_9_geom"
+        type="sphere"
+        size="0.032456"
+        mass="0.053420"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_9_calyx"
+        type="cylinder"
+        pos="0 0 0.034456"
+        size="0.012171 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_9_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 10: vine 2, red,
+         diameter=6.52 cm -->
+
+    <body
+      name="tomato_10_stem_tip"
+      pos="0.979333 -0.264154 1.212649">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        38.6 degrees.
+      -->
+
+      <geom
+        name="tomato_10_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.046912
+                0.000000
+                0.037406"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_10"
+      pos="0.979333 -0.264154 1.180042">
+
+      <freejoint
+        name="tomato_10_freejoint"/>
+
+      <geom
+        name="tomato_10_geom"
+        type="sphere"
+        size="0.032607"
+        mass="0.054170"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_10_calyx"
+        type="cylinder"
+        pos="0 0 0.034607"
+        size="0.012228 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_10_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 11: vine 2, green,
+         diameter=7.26 cm -->
+
+    <body
+      name="tomato_11_stem_tip"
+      pos="0.988043 -0.255177 1.058230">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        32.3 degrees.
+      -->
+
+      <geom
+        name="tomato_11_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.050714
+                0.000000
+                0.032063"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_11"
+      pos="0.988043 -0.255177 1.021937">
+
+      <freejoint
+        name="tomato_11_freejoint"/>
+
+      <geom
+        name="tomato_11_geom"
+        type="sphere"
+        size="0.036293"
+        mass="0.074692"
+        friction="1.5 0.02 0.002"
+        solref="0.015 1"
+        solimp="0.85 0.98 0.0012 0.5 2"
+        condim="4"
+        rgba="0.08 0.55 0.10 1"/>
+
+      <geom
+        name="tomato_11_calyx"
+        type="cylinder"
+        pos="0 0 0.038293"
+        size="0.013610 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_11_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 12: vine 2, red,
+         diameter=7.51 cm -->
+
+    <body
+      name="tomato_12_stem_tip"
+      pos="0.962934 -0.263212 1.389521">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        30.1 degrees.
+      -->
+
+      <geom
+        name="tomato_12_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.051887
+                0.000000
+                0.030129"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_12"
+      pos="0.962934 -0.263212 1.351958">
+
+      <freejoint
+        name="tomato_12_freejoint"/>
+
+      <geom
+        name="tomato_12_geom"
+        type="sphere"
+        size="0.037564"
+        mass="0.082818"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_12_calyx"
+        type="cylinder"
+        pos="0 0 0.039564"
+        size="0.014086 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_12_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 13: vine 2, red,
+         diameter=6.55 cm -->
+
+    <body
+      name="tomato_13_stem_tip"
+      pos="0.964223 -0.261160 1.513468">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        38.3 degrees.
+      -->
+
+      <geom
+        name="tomato_13_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.047089
+                0.000000
+                0.037184"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_13"
+      pos="0.964223 -0.261160 1.480701">
+
+      <freejoint
+        name="tomato_13_freejoint"/>
+
+      <geom
+        name="tomato_13_geom"
+        type="sphere"
+        size="0.032767"
+        mass="0.054971"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_13_calyx"
+        type="cylinder"
+        pos="0 0 0.034767"
+        size="0.012288 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_13_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 14: vine 2, orange,
+         diameter=7.18 cm -->
+
+    <body
+      name="tomato_14_stem_tip"
+      pos="0.985703 -0.263892 0.948682">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        33.0 degrees.
+      -->
+
+      <geom
+        name="tomato_14_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.050331
+                0.000000
+                0.032662"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_14"
+      pos="0.985703 -0.263892 0.912789">
+
+      <freejoint
+        name="tomato_14_freejoint"/>
+
+      <geom
+        name="tomato_14_geom"
+        type="sphere"
+        size="0.035893"
+        mass="0.072253"
+        friction="1.5 0.02 0.002"
+        solref="0.020 1"
+        solimp="0.78 0.96 0.0017 0.5 2"
+        condim="4"
+        rgba="1.00 0.50 0.02 1"/>
+
+      <geom
+        name="tomato_14_calyx"
+        type="cylinder"
+        pos="0 0 0.037893"
+        size="0.013460 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_14_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 15: vine 2, red,
+         diameter=6.07 cm -->
+
+    <body
+      name="tomato_15_stem_tip"
+      pos="0.969346 -0.262504 1.599812">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        42.4 degrees.
+      -->
+
+      <geom
+        name="tomato_15_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.044289
+                0.000000
+                0.040478"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_15"
+      pos="0.969346 -0.262504 1.569474">
+
+      <freejoint
+        name="tomato_15_freejoint"/>
+
+      <geom
+        name="tomato_15_geom"
+        type="sphere"
+        size="0.030338"
+        mass="0.043630"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_15_calyx"
+        type="cylinder"
+        pos="0 0 0.032338"
+        size="0.011377 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_15_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 16: vine 4, orange,
+         diameter=6.83 cm -->
+
+    <body
+      name="tomato_16_stem_tip"
+      pos="0.961784 0.089491 1.597160">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        35.9 degrees.
+      -->
+
+      <geom
+        name="tomato_16_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.048601
+                0.000000
+                0.035185"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_16"
+      pos="0.961784 0.089491 1.562986">
+
+      <freejoint
+        name="tomato_16_freejoint"/>
+
+      <geom
+        name="tomato_16_geom"
+        type="sphere"
+        size="0.034175"
+        mass="0.062364"
+        friction="1.5 0.02 0.002"
+        solref="0.020 1"
+        solimp="0.78 0.96 0.0017 0.5 2"
+        condim="4"
+        rgba="1.00 0.50 0.02 1"/>
+
+      <geom
+        name="tomato_16_calyx"
+        type="cylinder"
+        pos="0 0 0.036175"
+        size="0.012816 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_16_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 17: vine 4, red,
+         diameter=7.19 cm -->
+
+    <body
+      name="tomato_17_stem_tip"
+      pos="0.981128 0.078295 0.967277">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        32.9 degrees.
+      -->
+
+      <geom
+        name="tomato_17_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.050367
+                0.000000
+                0.032607"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_17"
+      pos="0.981128 0.078295 0.931346">
+
+      <freejoint
+        name="tomato_17_freejoint"/>
+
+      <geom
+        name="tomato_17_geom"
+        type="sphere"
+        size="0.035930"
+        mass="0.072478"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_17_calyx"
+        type="cylinder"
+        pos="0 0 0.037930"
+        size="0.013474 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_17_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 18: vine 4, red,
+         diameter=6.79 cm -->
+
+    <body
+      name="tomato_18_stem_tip"
+      pos="0.983696 0.099454 1.223063">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        36.3 degrees.
+      -->
+
+      <geom
+        name="tomato_18_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.048339
+                0.000000
+                0.035544"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_18"
+      pos="0.983696 0.099454 1.189137">
+
+      <freejoint
+        name="tomato_18_freejoint"/>
+
+      <geom
+        name="tomato_18_geom"
+        type="sphere"
+        size="0.033925"
+        mass="0.061008"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_18_calyx"
+        type="cylinder"
+        pos="0 0 0.035925"
+        size="0.012722 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_18_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 19: vine 4, red,
+         diameter=7.24 cm -->
+
+    <body
+      name="tomato_19_stem_tip"
+      pos="0.985328 0.082985 1.069560">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        32.5 degrees.
+      -->
+
+      <geom
+        name="tomato_19_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.050628
+                0.000000
+                0.032200"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_19"
+      pos="0.985328 0.082985 1.033358">
+
+      <freejoint
+        name="tomato_19_freejoint"/>
+
+      <geom
+        name="tomato_19_geom"
+        type="sphere"
+        size="0.036202"
+        mass="0.074133"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_19_calyx"
+        type="cylinder"
+        pos="0 0 0.038202"
+        size="0.013576 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_19_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 20: vine 4, orange,
+         diameter=6.28 cm -->
+
+    <body
+      name="tomato_20_stem_tip"
+      pos="0.974150 0.099651 1.336359">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        40.6 degrees.
+      -->
+
+      <geom
+        name="tomato_20_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.045535
+                0.000000
+                0.039071"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_20"
+      pos="0.974150 0.099651 1.304965">
+
+      <freejoint
+        name="tomato_20_freejoint"/>
+
+      <geom
+        name="tomato_20_geom"
+        type="sphere"
+        size="0.031394"
+        mass="0.048345"
+        friction="1.5 0.02 0.002"
+        solref="0.020 1"
+        solimp="0.78 0.96 0.0017 0.5 2"
+        condim="4"
+        rgba="1.00 0.50 0.02 1"/>
+
+      <geom
+        name="tomato_20_calyx"
+        type="cylinder"
+        pos="0 0 0.033394"
+        size="0.011773 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_20_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 21: vine 4, red,
+         diameter=7.58 cm -->
+
+    <body
+      name="tomato_21_stem_tip"
+      pos="0.952033 0.093985 1.448865">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        29.5 degrees.
+      -->
+
+      <geom
+        name="tomato_21_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.052200
+                0.000000
+                0.029583"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_21"
+      pos="0.952033 0.093985 1.410948">
+
+      <freejoint
+        name="tomato_21_freejoint"/>
+
+      <geom
+        name="tomato_21_geom"
+        type="sphere"
+        size="0.037917"
+        mass="0.085178"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_21_calyx"
+        type="cylinder"
+        pos="0 0 0.039917"
+        size="0.014219 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_21_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 22: vine 5, red,
+         diameter=7.80 cm -->
+
+    <body
+      name="tomato_22_stem_tip"
+      pos="0.957326 0.260461 1.096365">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        27.7 degrees.
+      -->
+
+      <geom
+        name="tomato_22_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.053128
+                0.000000
+                0.027882"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_22"
+      pos="0.957326 0.260461 1.057360">
+
+      <freejoint
+        name="tomato_22_freejoint"/>
+
+      <geom
+        name="tomato_22_geom"
+        type="sphere"
+        size="0.039005"
+        mass="0.092725"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_22_calyx"
+        type="cylinder"
+        pos="0 0 0.041005"
+        size="0.014627 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_22_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 23: vine 5, red,
+         diameter=6.72 cm -->
+
+    <body
+      name="tomato_23_stem_tip"
+      pos="0.979889 0.257782 1.503478">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        36.9 degrees.
+      -->
+
+      <geom
+        name="tomato_23_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.047988
+                0.000000
+                0.036016"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_23"
+      pos="0.979889 0.257782 1.469884">
+
+      <freejoint
+        name="tomato_23_freejoint"/>
+
+      <geom
+        name="tomato_23_geom"
+        type="sphere"
+        size="0.033595"
+        mass="0.059242"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_23_calyx"
+        type="cylinder"
+        pos="0 0 0.035595"
+        size="0.012598 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_23_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 24: vine 5, red,
+         diameter=7.60 cm -->
+
+    <body
+      name="tomato_24_stem_tip"
+      pos="0.958182 0.264114 0.943573">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        29.4 degrees.
+      -->
+
+      <geom
+        name="tomato_24_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.052278
+                0.000000
+                0.029444"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_24"
+      pos="0.958182 0.264114 0.905566">
+
+      <freejoint
+        name="tomato_24_freejoint"/>
+
+      <geom
+        name="tomato_24_geom"
+        type="sphere"
+        size="0.038006"
+        mass="0.085781"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_24_calyx"
+        type="cylinder"
+        pos="0 0 0.040006"
+        size="0.014252 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_24_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 25: vine 5, red,
+         diameter=6.18 cm -->
+
+    <body
+      name="tomato_25_stem_tip"
+      pos="0.951118 0.272120 1.221651">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        41.5 degrees.
+      -->
+
+      <geom
+        name="tomato_25_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.044934
+                0.000000
+                0.039761"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_25"
+      pos="0.951118 0.272120 1.190772">
+
+      <freejoint
+        name="tomato_25_freejoint"/>
+
+      <geom
+        name="tomato_25_geom"
+        type="sphere"
+        size="0.030880"
+        mass="0.046008"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_25_calyx"
+        type="cylinder"
+        pos="0 0 0.032880"
+        size="0.011580 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_25_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 26: vine 5, orange,
+         diameter=6.14 cm -->
+
+    <body
+      name="tomato_26_stem_tip"
+      pos="0.969950 0.264369 1.376080">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        41.9 degrees.
+      -->
+
+      <geom
+        name="tomato_26_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.044692
+                0.000000
+                0.040032"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_26"
+      pos="0.969950 0.264369 1.345404">
+
+      <freejoint
+        name="tomato_26_freejoint"/>
+
+      <geom
+        name="tomato_26_geom"
+        type="sphere"
+        size="0.030675"
+        mass="0.045101"
+        friction="1.5 0.02 0.002"
+        solref="0.020 1"
+        solimp="0.78 0.96 0.0017 0.5 2"
+        condim="4"
+        rgba="1.00 0.50 0.02 1"/>
+
+      <geom
+        name="tomato_26_calyx"
+        type="cylinder"
+        pos="0 0 0.032675"
+        size="0.011503 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_26_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 27: vine 5, green,
+         diameter=6.50 cm -->
+
+    <body
+      name="tomato_27_stem_tip"
+      pos="0.973837 0.260989 1.593559">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        38.8 degrees.
+      -->
+
+      <geom
+        name="tomato_27_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.046793
+                0.000000
+                0.037556"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_27"
+      pos="0.973837 0.260989 1.561059">
+
+      <freejoint
+        name="tomato_27_freejoint"/>
+
+      <geom
+        name="tomato_27_geom"
+        type="sphere"
+        size="0.032500"
+        mass="0.053637"
+        friction="1.5 0.02 0.002"
+        solref="0.015 1"
+        solimp="0.85 0.98 0.0012 0.5 2"
+        condim="4"
+        rgba="0.08 0.55 0.10 1"/>
+
+      <geom
+        name="tomato_27_calyx"
+        type="cylinder"
+        pos="0 0 0.034500"
+        size="0.012187 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_27_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 28: vine 6, red,
+         diameter=7.05 cm -->
+
+    <body
+      name="tomato_28_stem_tip"
+      pos="0.951437 0.441158 1.369056">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        34.0 degrees.
+      -->
+
+      <geom
+        name="tomato_28_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.049721
+                0.000000
+                0.033583"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_28"
+      pos="0.951437 0.441158 1.333783">
+
+      <freejoint
+        name="tomato_28_freejoint"/>
+
+      <geom
+        name="tomato_28_geom"
+        type="sphere"
+        size="0.035273"
+        mass="0.068570"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_28_calyx"
+        type="cylinder"
+        pos="0 0 0.037273"
+        size="0.013227 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_28_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 29: vine 6, red,
+         diameter=7.81 cm -->
+
+    <body
+      name="tomato_29_stem_tip"
+      pos="0.978862 0.438895 0.964057">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        27.6 degrees.
+      -->
+
+      <geom
+        name="tomato_29_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.053166
+                0.000000
+                0.027809"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_29"
+      pos="0.978862 0.438895 0.925005">
+
+      <freejoint
+        name="tomato_29_freejoint"/>
+
+      <geom
+        name="tomato_29_geom"
+        type="sphere"
+        size="0.039052"
+        mass="0.093054"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_29_calyx"
+        type="cylinder"
+        pos="0 0 0.041052"
+        size="0.014644 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_29_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Tomato 30: vine 6, red,
+         diameter=7.28 cm -->
+
+    <body
+      name="tomato_30_stem_tip"
+      pos="0.964478 0.429588 1.132807">
+
+      <!--
+        Peduncle length = 6.0 cm.
+        From vine toward tomato it slopes downward
+        32.1 degrees.
+      -->
+
+      <geom
+        name="tomato_30_peduncle"
+        type="capsule"
+        fromto="0 0 0
+                0.050816
+                0.000000
+                0.031902"
+        size="0.00275"
+        rgba="0.12 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+    </body>
+
+    <body
+      name="tomato_30"
+      pos="0.964478 0.429588 1.096407">
+
+      <freejoint
+        name="tomato_30_freejoint"/>
+
+      <geom
+        name="tomato_30_geom"
+        type="sphere"
+        size="0.036400"
+        mass="0.075356"
+        friction="1.5 0.02 0.002"
+        solref="0.01 1"
+        condim="4"
+        rgba="0.90 0.05 0.05 1"/>
+
+      <geom
+        name="tomato_30_calyx"
+        type="cylinder"
+        pos="0 0 0.038400"
+        size="0.013650 0.004"
+        rgba="0.10 0.50 0.10 1"
+        contype="0"
+        conaffinity="0"/>
+
+      <site
+        name="tomato_30_target_site"
+        pos="0 0 0"
+        type="sphere"
+        size="0.004"
+        rgba="0 1 0 0"/>
+
+    </body>
+
+    <!-- Simplified harvesting basket -->
+    <body
+      name="basket"
+      pos="0.70 0.36 0.7">
+
+      <!-- Solid bottom: 5 mm thick -->
+      <geom
+        name="basket_bottom"
+        type="box"
+        pos="0 0 0.0025"
+        size="0.10 0.125 0.0025"
+        rgba="0.32 0.34 0.36 1"/>
+
+      <!-- Front wall -->
+      <geom
+        name="basket_front"
+        type="box"
+        pos="0 -0.1225 0.0775"
+        size="0.10 0.0025 0.0725"
+        rgba="0.32 0.34 0.36 1"/>
+
+      <!-- Back wall -->
+      <geom
+        name="basket_back"
+        type="box"
+        pos="0 0.1225 0.0775"
+        size="0.10 0.0025 0.0725"
+        rgba="0.32 0.34 0.36 1"/>
+
+      <!-- Left wall -->
+      <geom
+        name="basket_left"
+        type="box"
+        pos="-0.0975 0 0.0775"
+        size="0.0025 0.125 0.0725"
+        rgba="0.32 0.34 0.36 1"/>
+
+      <!-- Right wall -->
+      <geom
+        name="basket_right"
+        type="box"
+        pos="0.0975 0 0.0775"
+        size="0.0025 0.125 0.0725"
+        rgba="0.32 0.34 0.36 1"/>
+
+      <site
+        name="basket_drop_site"
+        pos="0 0 0.66"
+        type="sphere"
+        size="0.015"
+        rgba="1 1 0 1"/>
+
+    </body>
+
+  </worldbody>
+
+  <!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+
+  <equality>
+
+    <weld
+      name="tomato_stem_weld"
+      body1="tomato_1"
+      body2="tomato_1_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_1_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_2_stem_weld"
+      body1="tomato_2"
+      body2="tomato_2_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_2_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_2_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_3_stem_weld"
+      body1="tomato_3"
+      body2="tomato_3_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_3_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_3_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_4_stem_weld"
+      body1="tomato_4"
+      body2="tomato_4_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_4_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_4_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_5_stem_weld"
+      body1="tomato_5"
+      body2="tomato_5_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_5_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_5_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_6_stem_weld"
+      body1="tomato_6"
+      body2="tomato_6_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_6_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_6_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_7_stem_weld"
+      body1="tomato_7"
+      body2="tomato_7_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_7_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_7_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_8_stem_weld"
+      body1="tomato_8"
+      body2="tomato_8_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_8_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_8_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_9_stem_weld"
+      body1="tomato_9"
+      body2="tomato_9_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_9_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_9_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_10_stem_weld"
+      body1="tomato_10"
+      body2="tomato_10_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_10_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_10_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_11_stem_weld"
+      body1="tomato_11"
+      body2="tomato_11_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_11_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_11_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_12_stem_weld"
+      body1="tomato_12"
+      body2="tomato_12_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_12_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_12_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_13_stem_weld"
+      body1="tomato_13"
+      body2="tomato_13_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_13_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_13_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_14_stem_weld"
+      body1="tomato_14"
+      body2="tomato_14_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_14_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_14_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_15_stem_weld"
+      body1="tomato_15"
+      body2="tomato_15_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_15_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_15_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_16_stem_weld"
+      body1="tomato_16"
+      body2="tomato_16_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_16_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_16_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_17_stem_weld"
+      body1="tomato_17"
+      body2="tomato_17_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_17_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_17_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_18_stem_weld"
+      body1="tomato_18"
+      body2="tomato_18_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_18_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_18_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_19_stem_weld"
+      body1="tomato_19"
+      body2="tomato_19_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_19_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_19_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_20_stem_weld"
+      body1="tomato_20"
+      body2="tomato_20_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_20_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_20_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_21_stem_weld"
+      body1="tomato_21"
+      body2="tomato_21_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_21_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_21_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_22_stem_weld"
+      body1="tomato_22"
+      body2="tomato_22_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_22_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_22_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_23_stem_weld"
+      body1="tomato_23"
+      body2="tomato_23_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_23_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_23_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_24_stem_weld"
+      body1="tomato_24"
+      body2="tomato_24_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_24_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_24_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_25_stem_weld"
+      body1="tomato_25"
+      body2="tomato_25_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_25_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_25_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_26_stem_weld"
+      body1="tomato_26"
+      body2="tomato_26_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_26_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_26_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_27_stem_weld"
+      body1="tomato_27"
+      body2="tomato_27_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_27_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_27_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_28_stem_weld"
+      body1="tomato_28"
+      body2="tomato_28_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_28_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_28_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_29_stem_weld"
+      body1="tomato_29"
+      body2="tomato_29_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_29_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_29_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+    <weld
+      name="tomato_30_stem_weld"
+      body1="tomato_30"
+      body2="tomato_30_stem_tip"
+      active="true"
+      solref="0.01 1"
+      solimp="0.95 0.99 0.001"/>
+
+    <connect
+      name="tomato_30_grasp_weld"
+      site1="tomato_attachment_center"
+      site2="tomato_30_target_site"
+      active="false"
+      solref="0.02 1"
+      solimp="0.90 0.98 0.002"/>
+
+  </equality>
+
+
+  <!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- GENERATED TOMATO ATTACHMENTS                              -->
+  <!-- ======================================================== -->
+<!-- ======================================================== -->
+  <!-- Tomato 1 attachment constraints                          -->
+  <!-- ======================================================== -->
+</mujoco>
