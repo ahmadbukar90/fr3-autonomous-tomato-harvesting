@@ -65,3 +65,11 @@ scripts/                     One-time setup scripts
 
 Simulation Python requirements are in `requirements.txt`.
 Hardware-only Python requirements are in `requirements-hardware.txt`.
+
+## No-install preflight
+
+Before installing dependencies, verify the repository without downloading, building, or launching anything:
+
+```bash
+./scripts/preflight_simulation.sh
+```
