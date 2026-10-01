@@ -59,7 +59,7 @@ require_text \
   "simulation_harvest_controller" \
   "simulation controller is launched"
 
-if grep -RIn --exclude=preflight_simulation.sh "/home/muhayy" \
+if grep -RIn --exclude=preflight_simulation.sh --exclude=preflight_hardware.sh "/home/muhayy" \
   src models README.md scripts dependencies > /dev/null
 then
   printf 'FAIL old absolute path found\n'
