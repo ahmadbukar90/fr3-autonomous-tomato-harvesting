@@ -73,6 +73,11 @@ class TomatoHarvestBridge(Node):
 
     def __init__(self) -> None:
         super().__init__("tomato_harvest_bridge_full_cycle")
+        self.declare_parameter("armed", False)
+        self.declare_parameter("continuous_mode", True)
+        self.get_logger().warn(
+            "Hardware motion starts DISARMED. Set armed:=true only after safety checks."
+        )
 
         # ============================================================
         # Frames and MoveIt configuration
@@ -355,6 +360,9 @@ class TomatoHarvestBridge(Node):
         self.reset_for_next_target()
 
     def target_callback(self, msg: TomatoTarget) -> None:
+        if not bool(self.get_parameter("armed").value):
+            return
+
         if self.state != HarvestState.SEARCHING:
             return
 
@@ -538,6 +546,13 @@ class TomatoHarvestBridge(Node):
         velocity_scaling: Optional[float] = None,
         acceleration_scaling: Optional[float] = None,
     ) -> None:
+        if not bool(self.get_parameter("armed").value):
+            self.get_logger().warn(
+                f"MoveIt {completion_tag} goal blocked because hardware is disarmed."
+            )
+            self.set_state(HarvestState.ERROR)
+            return
+
         if not self.move_group_client.wait_for_server(timeout_sec=5.0):
             self.fail_cycle(
                 f"MoveIt action server {self.move_action_name} unavailable."
@@ -692,7 +707,13 @@ class TomatoHarvestBridge(Node):
             self.get_logger().info(
                 f"Harvest cycle completed for target {self.locked_track_id}."
             )
-            self.reset_for_next_target()
+            if bool(self.get_parameter("continuous_mode").value):
+                self.reset_for_next_target()
+            else:
+                self.set_state(HarvestState.ERROR)
+                self.get_logger().warn(
+                    "Continuous mode is disabled. Controller is waiting for operator reset."
+                )
 
     # ================================================================
     # Gripper actions
@@ -713,6 +734,13 @@ class TomatoHarvestBridge(Node):
         )
 
     def send_gripper_goal(self, width: float, completion_tag: str) -> None:
+        if not bool(self.get_parameter("armed").value):
+            self.get_logger().warn(
+                f"Gripper {completion_tag} goal blocked because hardware is disarmed."
+            )
+            self.set_state(HarvestState.ERROR)
+            return
+
         if Move is None or self.gripper_client is None:
             self.fail_cycle("Franka gripper Move action is unavailable.")
             return
